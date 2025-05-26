@@ -1,0 +1,18 @@
+{
+    "Regular": {
+        "audio": "temp_uploads\\Regular_1748236298_grabacion.wav",
+        "ref_text": ""
+    },
+    "Triste": {
+        "audio": "temp_uploads\\Triste_1742953843_grabacion.wav",
+        "ref_text": "La Revolución Científica del siglo 17 transformó nuestra comprensión del universo. Figuras como Galileo Galilei, nacido en 1564, demostraron que la Tierra orbita alrededor del Sol, desafiando teorías geocéntricas."
+    },
+    "": {
+        "audio": "temp_uploads\\1738700454_grabacion.wav",
+        "ref_text": ""
+    },
+    "Lento": {
+        "audio": "temp_uploads\\Lento_1748236313_Narracion_triste.m4a",
+        "ref_text": ""
+    }
+}
