@@ -48,12 +48,15 @@ El frontend se iniciará normalmente en http://localhost:3000.
 Uso
 
 Desde el frontend, carga audios de referencia para cada tipo de habla.
+<img width="1322" height="560" alt="Captura de pantalla 2025-02-04 020502" src="https://github.com/user-attachments/assets/7adba696-93af-4cb4-9967-4443938598e4" />
 
 Escribe texto que incluya los tipos de habla entre llaves {Regular} y usa las marcas de texto para modificadores <pitch +2>, <volumen -5>, <velocidad 1.2>.
 
 Presiona "Generar Habla Multi-Estilo" para generar el audio con las modificaciones aplicadas en post-procesamiento.
 
 Escucha el audio generado desde el reproductor en la interfaz.
+<img width="1913" height="949" alt="Captura de pantalla 2025-02-04 213123" src="https://github.com/user-attachments/assets/c2ad6f0f-9708-4d90-a95a-04baa52e723f" />
+<img width="1359" height="951" alt="Captura de pantalla 2025-02-04 213206" src="https://github.com/user-attachments/assets/d30d0178-b237-4ff5-b956-a7a6ab5f26bb" />
 
 Notas Técnicas
 
