@@ -1,5 +1,7 @@
 Descripción
 
+<img width="1916" height="950" alt="Captura de pantalla 2025-02-04 211055" src="https://github.com/user-attachments/assets/bb423c57-ca8e-47ab-9305-9bab859c84e9" />
+
 Este proyecto permite generar audio a partir de texto con múltiples estilos de habla y aplicar modificadores de prosodia (pitch, volumen, velocidad) en un paso de post-procesamiento. Utiliza un backend en Flask con el modelo F5 Spanish TTS y un frontend en React para la interfaz de usuario.
 
 Requisitos Previos
