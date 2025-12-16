@@ -2,7 +2,7 @@
 # Make adjustments inside functions, and consider both gradio and cli scripts if need to change func output format
 import os
 import sys
-
+import logging
 sys.path.append(f"../../{os.path.dirname(os.path.abspath(__file__))}/third_party/BigVGAN/")
 
 import hashlib
@@ -19,6 +19,10 @@ import numpy as np
 import torch
 import torchaudio
 import tqdm
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 from pydub import AudioSegment, silence
 from transformers import pipeline
 from vocos import Vocos

@@ -30,7 +30,7 @@ dataset_name = "Emilia_ZH_EN"
 seed = None  # int | None
 
 exp_name = "F5TTS_Base"  # F5TTS_Base | E2TTS_Base
-ckpt_step = 1200000
+ckpt_step = 1250000
 
 nfe_step = 32  # 16, 32
 cfg_strength = 2.0

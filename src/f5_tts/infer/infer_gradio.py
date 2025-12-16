@@ -9,7 +9,7 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from num2words import num2words
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 import numpy as np
 import soundfile as sf
 import torchaudio
@@ -50,6 +50,26 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# --- REEMPLAZAR BLOQUE DE CARGA DE CHAT ---
+CHAT_MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"
+text_generator_pipe = None
+
+try:
+    logger.info(f"Cargando Chat ({CHAT_MODEL_NAME}) en CPU...")
+    
+    text_generator_pipe = pipeline(
+        "text-generation",
+        model=CHAT_MODEL_NAME,
+        torch_dtype=torch.float32, # float32 es mejor para CPU
+        device="cpu",              # <--- ESTO ES LO QUE DEBES CAMBIAR (antes era "auto" o "cuda")
+        model_kwargs={
+            "low_cpu_mem_usage": True
+        }
+    )
+    logger.info("✅ Chat IA listo en CPU.")
+except Exception as e:
+    logger.error(f"⚠️ Error Chat: {e}")
+
 # ───────── Dispositivos ─────────
 TTS_DEVICE      = "cuda" if torch.cuda.is_available() else "cpu"   # F5-TTS siempre en GPU si existe
 WHISPER_RAM_DTYPE = torch.float16                                  # ocupa menos RAM
@@ -77,7 +97,7 @@ try:
         text_dim=512,
         conv_layers=4
     )
-    model_path = hf_hub_download(repo_id="jpgallegoar/F5-Spanish", filename="model_1200000.safetensors")
+    model_path = hf_hub_download(repo_id="jpgallegoar/F5-Spanish", filename="model_1250000.safetensors")
     F5TTS_ema_model = load_model(
         DiT,
         F5TTS_model_cfg,
@@ -580,6 +600,49 @@ def get_speech_types():
         return jsonify(speech_types)
     except Exception as e:
         logger.exception(f"Error al obtener tipos de habla: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/api/generate_text', methods=['POST'])
+def generate_text_endpoint():
+    if not text_generator_pipe: 
+        return jsonify({'error': 'Chat no disponible (revisa logs)'}), 503
+        
+    data = request.json
+    topic = data.get('topic', '')
+    context = data.get('context', '')
+
+    messages = [
+        {
+            "role": "system", 
+            "content": (
+                "Eres un redactor de micro-guiones para locución. "
+                "TU OBJETIVO: Escribir un texto BREVE, cerca de 20 palabras "
+                "REGLAS: "
+                "1. Ve directo al grano. "
+                "2. NO saludes, NO uses introducciones. "
+                "3. Solo escribe lo que debe leer el narrador."
+            )
+        },
+        {
+            "role": "user", 
+            "content": f"Tema: {topic}. Tono: {context}. Hazlo corto."
+        }
+    ]
+
+    try:
+        # Ejecuta en CPU (no afecta la VRAM de F5)
+        outputs = text_generator_pipe(
+            messages,
+            max_new_tokens=200,
+            do_sample=True,
+            temperature=0.7,
+            top_p=0.9,
+        )
+        generated_text = outputs[0]["generated_text"][-1]["content"]
+        return jsonify({'text': generated_text.strip()})
+
+    except Exception as e:
+        logger.error(f"Error Chat: {e}")
         return jsonify({'error': str(e)}), 500
 
 def cleanup_temp_files():

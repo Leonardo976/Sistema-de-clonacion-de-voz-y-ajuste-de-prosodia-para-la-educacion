@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import SpeechTypeInput from './SpeechTypeInput';
 import AudioPlayer from './AudioPlayer';
 import ProsodyModifier from './ProsodyModifier';
+import TextGeneratorBubble from './TextGeneratorBubble';
 
 const MAX_SPEECH_TYPES = 100;
 const GUIDE_TEXT = `La Revolución Científica del siglo 17 transformó nuestra comprensión del universo. Figuras como Galileo Galilei, nacido en 1564, demostraron que la Tierra orbita alrededor del Sol, 
@@ -56,6 +57,11 @@ const setPreview = (id, blobOrFile) => {
      return { ...prev, [id]: URL.createObjectURL(blobOrFile) };
    });
 };
+
+const handleAiTextGenerated = (newText) => {
+    setGenerationText(newText); 
+    toast.success("Texto insertado desde IA");
+  };
 
 /* Quitar un audio (y su URL local) de un speechType */
 const discardReferenceAudio = async (speechTypeId) => {
@@ -1107,7 +1113,10 @@ const writeString = (view, offset, string) => {
         )}
 
         {transcriptionData && transcriptionData.success && (
-          <ProsodyModifier transcriptionData={transcriptionData} generatedAudio={generatedAudio} />
+        <ProsodyModifier 
+        transcriptionData={transcriptionData} 
+        generatedAudio={generatedAudio}
+        onDeleteAudio={handleDeleteAudio}/>
         )}
 
         {modifiedAudio && (
@@ -1178,6 +1187,7 @@ const writeString = (view, offset, string) => {
             </button>
           </div>
         )}
+        <TextGeneratorBubble onTextGenerated={handleAiTextGenerated} />
       </div>
     </div>
   );

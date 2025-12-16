@@ -1,6 +1,6 @@
 {
     "Regular": {
-        "audio": "temp_uploads\\Regular_1748236298_grabacion.wav",
+        "audio": "temp_uploads\\Regular_1765311189_jara2.mp3",
         "ref_text": ""
     },
     "Triste": {
@@ -12,7 +12,15 @@
         "ref_text": ""
     },
     "Lento": {
-        "audio": "temp_uploads\\Lento_1748236313_Narracion_triste.m4a",
+        "audio": "temp_uploads\\Lento_1748663809_Narracion_triste.m4a",
+        "ref_text": ""
+    },
+    "Interrogacion": {
+        "audio": "temp_uploads\\Interrogacion_1748489103_interrogacion-2.mp3",
+        "ref_text": ""
+    },
+    "pregunta": {
+        "audio": "temp_uploads\\pregunta_1748489171_interrogacion-2.mp3",
         "ref_text": ""
     }
 }
